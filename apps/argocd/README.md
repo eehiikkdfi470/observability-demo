@@ -11,3 +11,7 @@ Output: The rendered YAML file (_rendered_argocd.yaml) contains all the Kubernet
 Installation of Argocd 
     "kubectl apply -f _rendered_argocd.yaml"
 
+Upgrade Argo CD:
+While upgrading ArgoCD , replace the version of ArgoCD application at /apps/argocd/overlays/{env}/kustomization.yaml with latest version .
+
+Once kustomization.yaml file is updated with latest version - run the rendered command and kubectl apply -f command as metnioend above.
