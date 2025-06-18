@@ -25,3 +25,22 @@ nodes:
   - role: worker
   - role: worker
   - role: worker
+  - role: worker
+
+Step 2: Create the cluster using KinD
+
+Run the following command in the directory where config.yml is saved:
+
+kind create cluster --config config.yml
+
+Alternatively, you can specify a cluster name:
+
+kind create cluster --config config.yml --name my-kind-cluster
+
+Step 3: Verify the cluster is up and running
+
+Check the nodes with:
+
+kubectl get nodes
+Expected output should list 5 nodes
+![alt text](image.png)
