@@ -1,6 +1,6 @@
 **Rendering the Argo CD Helm Chart**
 
-kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone > _rendered_argocd.yaml
+**kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone > _rendered_argocd.yaml**
 
 Purpose:
 
@@ -8,9 +8,9 @@ This command renders the Argo CD Helm chart into a Kubernetes manifest file name
 
 **Key Flags:**
 
---enable-helm: Enables Helm chart rendering within a Kustomize configuration.
+**--enable-helm**: Enables Helm chart rendering within a Kustomize configuration.
 
---load-restrictor LoadRestrictionsNone: Disables restrictions on loading local files, useful when working with local Helm charts or Kustomize overlays.
+**--load-restrictor** LoadRestrictionsNone: Disables restrictions on loading local files, useful when working with local Helm charts or Kustomize overlays.
 
 Output:
 
@@ -18,7 +18,7 @@ The rendered YAML file (_rendered_argocd.yaml) contains all the Kubernetes resou
 
 **Installation of Argo CD**
 
-kubectl apply -f _rendered_argocd.yaml
+**kubectl apply -f _rendered_argocd.yaml**
 
 This command applies the rendered manifest to your Kubernetes cluster, installing Argo CD.
 
