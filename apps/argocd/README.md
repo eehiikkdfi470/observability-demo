@@ -23,9 +23,13 @@ This command applies the rendered manifest to your Kubernetes cluster, installin
 When upgrading Argo CD:
 
 Update the version of the Argo CD application in the file:
+
 /apps/argocd/overlays/{env}/kustomization.yaml
+
 Replace {env} with your environment name and set the version to the latest Argo CD release.
 After updating the kustomization.yaml file, rerun the render command and apply command as described above:
-kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone > _rendered_argocd.yaml
-kubectl apply -f _rendered_argocd.yaml
+
+**kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone > _rendered_argocd.yaml**
+**kubectl apply -f _rendered_argocd.yaml**
+
 This will upgrade Argo CD to the new version on your cluster.
