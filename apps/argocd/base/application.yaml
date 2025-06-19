@@ -3,9 +3,9 @@
 ##
 
 # -- Provide a name in place of `argocd`
-nameOverride: argocd
+nameOverride: argocd-demo
 # -- String to fully override `"argo-cd.fullname"`
-fullnameOverride: "app"
+fullnameOverride: ""
 # -- Override the namespace
 # @default -- `.Release.Namespace`
 namespaceOverride: ""
