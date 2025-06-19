@@ -1,4 +1,4 @@
-name: Render and Deploy ArgoCD to local KIND cluster
+name: Render and Deploy ArgoCD to KIND
 
 on:
   push:
@@ -7,6 +7,7 @@ on:
     paths:
       - 'apps/argocd/base/application.yaml'
       - 'apps/argocd/overlays/dev/values.yaml'
+  workflow_dispatch:
 
 jobs:
   render-and-deploy:
