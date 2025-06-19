@@ -33,4 +33,4 @@ jobs:
 
       - name: Wait for ArgoCD pods to be ready in argocd namespace
         run: |
-          kubectl wait --for=condition=Ready pods --all -n argocd --timeout=120s
+          kubectl wait --for=condition=Ready pods --all -n argocd --timeout=300s
