@@ -1,7 +1,7 @@
 # server:
 #   service:
 #     type: LoadBalancer
-fullnameOverride: "argocd-app"
+fullnameOverride: "argocd-demo-app"
 controller:
   replicaCount: 1
 
