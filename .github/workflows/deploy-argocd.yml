@@ -1,4 +1,4 @@
-name: Render and Deploy ArgoCD to KIND
+name: Render and Deploy ArgoCD to local KIND cluster
 
 on:
   push:
@@ -16,13 +16,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        with:
-          persist-credentials: false  # We'll configure credentials manually
-
-      - name: Set up Git config
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Set KUBECONFIG environment variable
         run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
@@ -32,19 +25,8 @@ jobs:
 
       - name: Generate rendered ArgoCD manifests
         run: |
-          kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone apps/argocd/overlays/dev > apps/argocd/overlays/dev/_rendered_argocd.yaml
-
-      - name: Copy rendered file to _rendered_argocd_latest.yaml
-        run: cp apps/argocd/overlays/dev/_rendered_argocd.yaml apps/argocd/overlays/dev/_rendered_argocd_latest.yaml
-
-      - name: Commit and push _rendered_argocd_latest.yaml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git add apps/argocd/overlays/dev/_rendered_argocd_latest.yaml
-          git commit -m "Update _rendered_argocd_latest.yaml from workflow [skip ci]" || echo "No changes to commit"
-          git push origin HEAD:main
+          kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone apps/argocd/overlays/dev > apps/argocd/overlays/dev/_rendered_argocd_latest.yaml
 
       - name: Apply rendered ArgoCD manifests
         run: |
-          kubectl apply -f apps/argocd/overlays/dev/_rendered_argocd.yaml
+          kubectl apply -f apps/argocd/overlays/dev/_rendered_argocd_latest.yaml
