@@ -1,0 +1,26 @@
+name: Deploy Rendered ArgoCD to local KIND cluster
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'overlays/dev/_rendered_argocd.yaml'
+
+jobs:
+  deploy-argocd:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set KUBECONFIG environment variable
+        run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+
+      - name: Apply rendered ArgoCD YAML
+        run: kubectl apply -f overlays/dev/_rendered_argocd.yaml
+
+      - name: Wait for ArgoCD pods to be ready in argocd namespace
+        run: |
+          kubectl wait --for=condition=Ready pods --all -n argocd --timeout=180s
