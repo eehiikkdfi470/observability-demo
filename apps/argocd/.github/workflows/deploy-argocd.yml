@@ -1,14 +1,15 @@
-name: Deploy Rendered ArgoCD to local KIND cluster
+name: Render and Deploy ArgoCD to local KIND cluster
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'overlays/dev/_rendered_argocd.yaml'
+      - 'apps/argocd/base/application.yaml'
+      - 'apps/argocd/overlays/dev/values.yaml'
 
 jobs:
-  deploy-argocd:
+  render-and-deploy:
     runs-on: self-hosted
 
     steps:
@@ -18,8 +19,13 @@ jobs:
       - name: Set KUBECONFIG environment variable
         run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
 
-      - name: Apply rendered ArgoCD YAML
-        run: kubectl apply -f overlays/dev/_rendered_argocd.yaml
+      - name: Generate rendered ArgoCD manifests
+        run: |
+          kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone > overlays/dev/_rendered_argocd.yaml
+
+      - name: Apply rendered ArgoCD manifests
+        run: |
+          kubectl apply -f overlays/dev/_rendered_argocd.yaml
 
       - name: Wait for ArgoCD pods to be ready in argocd namespace
         run: |
