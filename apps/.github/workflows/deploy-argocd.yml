@@ -27,7 +27,3 @@ jobs:
       - name: Apply rendered ArgoCD manifests
         run: |
           kubectl apply -f overlays/dev/_rendered_argocd.yaml
-
-      - name: Wait for ArgoCD pods to be ready in argocd namespace
-        run: |
-          kubectl wait --for=condition=Ready pods --all -n argocd --timeout=180s
