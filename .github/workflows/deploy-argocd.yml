@@ -1,0 +1,33 @@
+name: Render and Deploy ArgoCD to KIND
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/argocd/base/application.yaml'
+      - 'apps/argocd/overlays/dev/values.yaml'
+  workflow_dispatch:
+
+jobs:
+  render-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set KUBECONFIG environment variable
+        run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+
+      - name: Generate rendered ArgoCD manifests
+        run: |
+          kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone > overlays/dev/_rendered_argocd.yaml
+
+      - name: Apply rendered ArgoCD manifests
+        run: |
+          kubectl apply -f overlays/dev/_rendered_argocd.yaml
+
+      - name: Wait for ArgoCD pods to be ready in argocd namespace
+        run: |
+          kubectl wait --for=condition=Ready pods --all -n argocd --timeout=180s
