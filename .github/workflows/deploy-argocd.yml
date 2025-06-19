@@ -1,4 +1,4 @@
-name: Render and Deploy ArgoCD to KIND
+name: Render and Deploy ArgoCD to local KIND cluster
 
 on:
   push:
@@ -20,14 +20,17 @@ jobs:
       - name: Set KUBECONFIG environment variable
         run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
 
+      - name: Ensure overlays/dev directory exists
+        run: mkdir -p apps/argocd/overlays/dev
+
       - name: Generate rendered ArgoCD manifests
         run: |
-          kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone > overlays/dev/_rendered_argocd.yaml
+          kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone > apps/argocd/overlays/dev/_rendered_argocd.yaml
 
       - name: Apply rendered ArgoCD manifests
         run: |
-          kubectl apply -f overlays/dev/_rendered_argocd.yaml
+          kubectl apply -f apps/argocd/overlays/dev/_rendered_argocd.yaml
 
       - name: Wait for ArgoCD pods to be ready in argocd namespace
         run: |
-          kubectl wait --for=condition=Ready pods --all -n argocd --timeout=180s
+          kubectl wait --for=condition=Ready pods --all -n argocd --timeout=120s
