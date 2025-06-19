@@ -1,8 +1,14 @@
-# server:
-#   service:
-#     type: LoadBalancer
+server:
+  resources:
+    limits:
+      cpu: 250m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 controller:
   replicaCount: 1
 
 redis:
   enabled: true
+fullnameOverride: "demo-argocd"
