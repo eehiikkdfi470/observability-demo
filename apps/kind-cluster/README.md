@@ -43,4 +43,7 @@ Check the nodes with:
 
 kubectl get nodes
 Expected output should list 5 nodes
+
+![image](https://github.com/user-attachments/assets/011345e3-6d89-4bca-88e0-3077e5705117)
+
 ![alt text](image.png)
