@@ -25,11 +25,11 @@ jobs:
 
       - name: Generate rendered ArgoCD manifests
         run: |
-          kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone apps/argocd/overlays/dev > apps/argocd/overlays/dev/_rendered_argocd.yaml
+          kubectl kustomize --enable-helm --load-restrictor LoadRestrictionsNone apps/argocd/overlays/dev > apps/argocd/overlays/dev/_rendered_argocd_latest.yaml
 
       - name: Apply rendered ArgoCD manifests
         run: |
-          kubectl apply -f apps/argocd/overlays/dev/_rendered_argocd.yaml
+          kubectl apply -f apps/argocd/overlays/dev/_rendered_argocd_latest.yaml
 
       - name: Wait for ArgoCD pods to be ready in argocd namespace
         run: |
